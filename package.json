@@ -1,0 +1,39 @@
+{
+  "name": "ton.uni",
+  "version": "1.0.0",
+  "description": "一个封装于uni/wx的工具类",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint 'src/**/*.{ts,js}' --fix",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "emitter",
+    "typescript",
+    "javascript",
+    "library"
+  ],
+  "author": "kebin <mk9007@163.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@dcloudio/types": "^3.4.21",
+    "@types/jest": "^30.0.0",
+    "@types/wechat-miniprogram": "^3.4.8",
+    "eslint": "^8.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.4",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

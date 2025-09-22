@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+     "target": "ES2017",      // 或更高，如 ES2018、ES2020
+    "lib": ["ES2017", "DOM"], // 或 ["ES2018", "DOM"] 根据项目需求
+    "module": "ESNext",        // 或 "CommonJS"
+    "declaration": true,       // 生成 .d.ts 类型文件
+    "outDir": "dist",          // 编译输出目录
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["@dcloudio/types","wechat-miniprogram","jest", "node"],
+    
+  },
+  "include": ["src/**/*"],
+  
+}

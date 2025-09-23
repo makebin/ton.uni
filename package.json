@@ -1,6 +1,6 @@
 {
   "name": "ton.uni",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "一个封装于uni/wx的工具类",
   "main": "dist/index.js",
   "module": "dist/index.js",

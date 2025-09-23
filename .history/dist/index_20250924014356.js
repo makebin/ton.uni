@@ -77,7 +77,10 @@ const ton = new Proxy({ use }, {
             };
 
             // target[prop] 统一函数：根据 $async 决定
-            target[prop] = forcedAsyncFn;
+            target[prop] = (options = {}, ...args) =>
+                options && options.$async === true
+                    ? forcedAsyncFn(options, ...args)
+                    : normalAsyncFn(options, ...args);
         }
 
         return target[prop];

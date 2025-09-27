@@ -81,9 +81,7 @@ function beautifyLog(type: 'info' | 'success' | 'error' | 'warning', message: st
     error: 'color: #dc3545; font-weight: bold;',
     warning: 'color: #ffc107; font-weight: bold;',
   };
-
-  // 返回一个数组，包含格式化的消息和样式
-  return [`%c${message}`, colors[type] || 'color: #000'];
+  return `%c${message}`, colors[type] || 'color: #000';
 }
 
 // Promise 化的类型
@@ -110,15 +108,27 @@ const ton: TonType = new Proxy({ use } as any, {
       console.log(beautifyLog('info', `Calling ${isAsync ? 'async' : 'sync'} function: ${prop}`));
     }
 
-    if (isAsync) {
-      // 异步 API → 直接处理为 Promise 风格
+    if (!isAsync) {
+      // 同步 API → 直接透传
+      target[prop] = (...args: any[]) => {
+        if (logEnabled) {
+          console.log(beautifyLog('info', `Arguments:`), args);
+        }
+        return fn(...args);
+      };
+    } else {
+      // 异步 API → 支持 $async 参数
       target[prop] = (options: any = {}, ...args: any[]) => {
         const { $async, ...restOptions } = options || {};
 
-        // 打印日志
         if (logEnabled) {
           console.log(beautifyLog('info', `Arguments:`), args);
           console.log(beautifyLog('info', `Options:`), restOptions);
+        }
+
+        if ($async === false) {
+          // 回调风格
+          return fn(restOptions, ...args);
         }
 
         // Promise 风格
@@ -144,44 +154,6 @@ const ton: TonType = new Proxy({ use } as any, {
             ...args
           );
         });
-      };
-    } else {
-      // 非异步 API → 根据 $async 参数判断是否使用 Promise 风格
-      target[prop] = (options: any = {}, ...args: any[]) => {
-        const { $async, ...restOptions } = options || {};
-
-        // 打印日志
-        if (logEnabled) {
-          console.log(beautifyLog('info', `Calling sync function: ${prop}`));
-          console.log(beautifyLog('info', `Arguments:`), args);
-          console.log(beautifyLog('info', `Options:`), restOptions);
-        }
-
-        // 如果有 $async 参数并且为 true，则使用 Promise 风格
-        if ($async === true) {
-          return new Promise((resolve, reject) => {
-            fn({
-              ...restOptions,
-              success: (res: any) => {
-                if (logEnabled) {
-                  console.log(beautifyLog('success', `Success: ${prop}`));
-                  console.log(beautifyLog('success', `Response:`), res);
-                }
-                resolve(res);
-              },
-              fail: (err: any) => {
-                if (logEnabled) {
-                  console.log(beautifyLog('error', `Error: ${prop}`));
-                  console.log(beautifyLog('error', `Error:`), err);
-                }
-                reject(err);
-              }
-            }, ...args);
-          });
-        }
-
-        // 否则使用回调风格
-        return fn(restOptions, ...args);
       };
     }
 

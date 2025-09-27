@@ -74,6 +74,7 @@ function disableLog() {
 }
 
 // 日志美化函数
+// 日志美化函数
 function beautifyLog(type: 'info' | 'success' | 'error' | 'warning', message: string) {
   const colors = {
     info: 'color: #0078d4; font-weight: bold;',

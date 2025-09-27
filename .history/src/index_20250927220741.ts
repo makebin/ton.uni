@@ -81,9 +81,8 @@ function beautifyLog(type: 'info' | 'success' | 'error' | 'warning', message: st
     error: 'color: #dc3545; font-weight: bold;',
     warning: 'color: #ffc107; font-weight: bold;',
   };
-
-  // 返回一个数组，包含格式化的消息和样式
-  return [`%c${message}`, colors[type] || 'color: #000'];
+  // 使用反引号来解析模板字符串
+  return `%c${message}`, colors[type] || 'color: #000';
 }
 
 // Promise 化的类型

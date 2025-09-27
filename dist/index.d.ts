@@ -13,8 +13,11 @@ type Promisify<T> = {
     }, ...args: A extends [any, ...infer R] ? R : []) => Promise<any> : T[K] : T[K];
 };
 type PluginApi = Record<string, (...args: any[]) => any>;
+declare function enableLog(): void;
+declare function disableLog(): void;
 type TonType = Promisify<BaseApiType> & {
     use: (plugin: PluginApi) => void;
 };
 declare const ton: TonType;
 export default ton;
+export { enableLog, disableLog };
